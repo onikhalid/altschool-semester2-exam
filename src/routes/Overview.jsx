@@ -1,0 +1,120 @@
+import { useState } from "react"
+import NavTabs from "../components/NavTabs"
+import Repositories from "./Repositories"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faBookBookmark, faBookOpen, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { cn } from "../lib/utils"
+import { useUserData } from "../lib/context"
+import Spinner from "../components/ui/spinner"
+
+const Overview = () => {
+  // const { userData } = useUserData()
+  const { isLoading, userData } = useUserData()
+  const [currentTab, setCurrentTab] = useState('Overview')
+  const cat = [
+    {
+      title: 'Overview',
+      link: '/',
+      id: '1',
+      component: <Overview />,
+      icon: <FontAwesomeIcon icon={faBookOpen} />
+    },
+    {
+      title: 'Repositories',
+      link: '/repos',
+      id: '2',
+      component: <Repositories />,
+      icon: <FontAwesomeIcon icon={faBookBookmark} />
+    },
+  ]
+
+  return (
+    <div className={cn("flex flex-col w-full  md:my-1 overflow-hidden px-4")}>
+      <NavTabs
+        categoryArray={cat}
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        fallback='/'
+        listClass='text-foreground'
+      />
+      {
+        isLoading ?
+          <div className="flex items-center justify-center">
+            <Spinner className="text-primary-foreground" pathClassName="stroke-current" />
+          </div>
+          :
+          <main className="grow overflow-y-scroll">
+
+            <section className="my-12">
+              <h4>
+                Profile stats
+              </h4>
+              <section className="grid grid-cols-[repeat(auto-fill,minmax(max-content,200px))] gap-5 mt-3">
+                <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
+                  <div className="grid place-content-center bg-primary-foreground rounded-xl aspect-square w-[3.15rem]">
+                    <FontAwesomeIcon icon={faBookBookmark} size="lg" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-muted-foreground text-base">Repositories</h4>
+                    <p className="text-xl font-medium">{userData?.public_repos}</p>
+                  </div>
+                </article>
+
+                <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
+                  <div className="grid place-content-center bg-pink-400 rounded-xl aspect-square w-[3.2rem]">
+                    <FontAwesomeIcon icon={faUser} size="lg" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-[muted-foreground] text-base">Following</h4>
+                    <p className="text-xl font-medium">{userData?.followers}</p>
+                  </div>
+                </article>
+
+                <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
+                  <div className="grid place-content-center bg-primary-foreground rounded-xl aspect-square w-[3.15rem]">
+                    <FontAwesomeIcon icon={faUserPlus} size="lg" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-muted-foreground text-base">Following</h4>
+                    <p className="text-xl font-medium">{userData?.following}</p>
+                  </div>
+                </article>
+              </section>
+            </section>
+
+
+            <section className="my-12">
+              <h4>
+                Coding stats
+              </h4>
+              <div className="flex items-start gap-4 mt-3 flex-wrap max-lg:justify-center">
+                <img height="180em" src="https://github-readme-stats.vercel.app/api?username=onikhalid&show=reviews,discussions_started,discussions_answered,prs_merged,prs_merged_percentage&theme=dark" />
+                <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=onikhalid&langs_count=7&theme=dark" />
+                
+              </div>
+            </section>
+
+            <section className="my-12">
+              <h4>
+                Top Repositories
+              </h4>
+              <div className="flex items-start gap-4 mt-3 flex-wrap max-lg:justify-center">
+                <img height="180em" src="https://github-readme-stats.vercel.app/api/pin/?username=onikhalid&repo=archi-ng&theme=dark" />
+                <img height="180em" src="https://github-readme-stats.vercel.app/api/pin/?username=onikhalid&repo=countries-app&theme=dark" />
+                <img height="180em" src="https://github-readme-stats.vercel.app/api/pin/?username=onikhalid&repo=.dev-old&theme=dark" />
+                
+              </div>
+            </section>
+
+          </main>
+      }
+
+
+    </div>
+  )
+}
+
+export default Overview
