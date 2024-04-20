@@ -33,5 +33,5 @@ export function convertKebabAndSnakeToLowerCase(string) {
  * https://docs.github.com/en/rest/using-the-rest-api/libraries-for-the-rest-api?apiVersion=2022-11-28
  */
 export const octokit = new Octokit({
-  auth: process.env.GITHUB_SECRET,
+  auth: import.meta.env.VITE_GITHUB_SECRET
 })
