@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { formatDistanceToNow } from "date-fns";
+import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCodeFork, faFolder, faLink } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCodeFork, faFolder, faLink } from "@fortawesome/free-solid-svg-icons";
 import { faEye, faFile, faStar } from "@fortawesome/free-regular-svg-icons";
 
 import { cn, octokit } from "../lib/utils";
@@ -10,8 +11,6 @@ import Spinner from "../components/ui/spinner";
 import { ErrorCard } from "../components";
 import { Button } from "../components/ui/button";
 
-import { useNavigate } from 'react-router-dom';
-import { formatDistanceToNow } from "date-fns";
 
 const RepositoryDetail = () => {
   let params = useParams();
@@ -24,10 +23,18 @@ const RepositoryDetail = () => {
   const [isLoadingrepoInfo, setLoadingRepoInfo] = useState(true)
   const [isLoadingTreesInfo, setLoadingTreesInfo] = useState(true)
 
-
+  // ? JSON.parse(localStorage.getItem('fakeRepos')) : [];
   useEffect(() => {
     const fetchData = async () => {
       try {
+
+        const isFakeRepo = JSON.parse(localStorage.getItem('fakeRepos'))?.some(repo => repo.name === params.repoId);
+        if (isFakeRepo) {
+          const fakeRepo = JSON.parse(localStorage.getItem('fakeRepos'))?.find(repo => repo.name === params.repoId);
+          setRepoInfo(fakeRepo)
+          setRepoTrees(generateFakeTree())
+          return;
+        }
 
         const repoInfoResult = await octokit.request(`GET /repos/onikhalid/${params.repoId}`, {
           headers: {
@@ -52,8 +59,33 @@ const RepositoryDetail = () => {
     }
 
     fetchData()
+
+    
   }, [params.repoId])
 
+  const generateFakeTree = () => {
+    const fakeTree = {
+      tree: []
+    };
+
+    // Generate a random number of files and folders
+    const numFiles = Math.floor(Math.random() * 10) + 3; // Between 3 and 12 files/folders
+    const numFolders = Math.floor(Math.random() * 5) + 1; // Between 1 and 5 folders
+
+    // Generate files
+    for (let i = 0; i < numFiles; i++) {
+      const fileName = `file${i}.txt`;
+      fakeTree.tree.push({ path: fileName, type: 'blob' });
+    }
+
+    // Generate folders
+    for (let i = 0; i < numFolders; i++) {
+      const folderName = `folder${i}`;
+      fakeTree.tree.push({ path: folderName, type: 'tree' });
+    }
+
+    return fakeTree;
+  };
 
 
 
@@ -103,11 +135,17 @@ const RepositoryDetail = () => {
                   </section>
                 </header>
 
-
-                <div className=" relative flex flex-col-reverse max-md:gap-4 gap-8 md:flex-row overflow-hidden max-md:pb-4 max-md:pt-0 w-[85%] max-w-[1000px] mx-auto lg:mt-10">
-                  <section className="flex flex-col w-full xl:w-3/5 md:pr-4">
-                    <ul className="border-[1.5px] rounded-md divide-y-[1.5px] divide-foreground w-full border-foreground overflow-hidden">
-                      <li className="flex justify-between items-center p-4 bg-background">
+                <button
+                  onClick={handleGoBack}
+                  className={`flex items-center gap-4 px-4 py-2 text-sm bg-background max-w-max text-foreground border-2 border-transparent hover:border-foreground rounded-md transition-all duration-300`}
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                  Back
+                </button>
+                <div className=" relative flex flex-col-reverse max-md:gap-4 gap-8 md:flex-row overflow-hidden max-md:pb-4 max-md:pt-0 w-[85%] max-w-[1000px] mx-auto lg:mt-8">
+                  <section className="flex flex-col w-full xl:w-3/5 md:pr-4 overflow-y-scroll pb-4">
+                    <ul className="border-[1.5px] rounded-md divide-y-[1.5px] divide-foreground w-full border-foreground">
+                      <li className="flex justify-between items-center p-4 bg-background rounded-t-md">
                         <div className="flex items-center gap-2">
                           <img src={repoInfo?.owner.avatar_url} alt="" className="w-8 h-8 rounded-full" />
                           <Link target="_blank" to={`https://github.com/${repoInfo?.owner.login}`} className="text-sm font-medium">
@@ -119,7 +157,7 @@ const RepositoryDetail = () => {
                         </p>
                       </li>
                       {
-                        [...repoTrees.tree].sort((a)=> a.type == 'blob' ? 1 : -1)?.map((tree, index) => {
+                        [...repoTrees.tree].sort((a) => a.type == 'blob' ? 1 : -1)?.map((tree, index) => {
                           const { path, type } = tree
                           return (
                             <li key={index} className="flex items-center gap-2 px-4 py-2 text-sm">
@@ -172,28 +210,19 @@ const RepositoryDetail = () => {
                     </div>
                   </article>
                 </div>
-
-
-                <footer className="pb-4 mt-auto w-[85%] max-w-[1000px] mx-auto">
-                  <Link to={`/repos`} className="text-primary-foreground hover:underline">
-                    <Button>
-                      Go back to repositories
-                    </Button>
-                  </Link>
-                </footer>
               </main>
               :
               <div className="grow flex items-center justify-center">
-                <ErrorCard 
-                message={
-                  <>
-                    <p>There was a problem fetching the details of this repo. Either it doesn&apos;t exist or there&apos;s a problem with your internet connection.</p>
-                    <Button className='mt-4' onClick={handleGoBack}>
-                      Go back
-                    </Button>
-                  </>
-                }
-                 />
+                <ErrorCard
+                  message={
+                    <>
+                      <p>There was a problem fetching the details of this repo. Either it doesn&apos;t exist or there&apos;s a problem with your internet connection.</p>
+                      <Button className='mt-4' onClick={handleGoBack}>
+                        Go back
+                      </Button>
+                    </>
+                  }
+                />
               </div>
 
         }
@@ -201,17 +230,4 @@ const RepositoryDetail = () => {
     </div>
   )
 }
-
 export default RepositoryDetail
-
-
-
-{/* <ul>
-{
-  repoTrees.tree.map((tree, index) => (
-    <li key={index}>
-      <span>{tree.path}</span>
-    </li>
-  ))
-}
-</ul> */}

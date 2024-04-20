@@ -8,10 +8,10 @@ function DarkModeToggle({ isDarkMode, toggleDarkMode }) {
         <div className="cursor-pointer">
             {
                 isDarkMode ? (
-                    <FontAwesomeIcon icon={faMoon} onClick={toggleDarkMode} />
+                    <FontAwesomeIcon icon={faMoon} onClick={toggleDarkMode} size="xl"/>
                 ) :
                     (
-                        <FontAwesomeIcon icon={faSun} onClick={toggleDarkMode} />
+                        <FontAwesomeIcon icon={faSun} onClick={toggleDarkMode} size="xl"/>
                     )
             }
         </div>

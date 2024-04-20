@@ -6,6 +6,7 @@ import { faBookBookmark, faBookOpen, faUser, faUserPlus } from "@fortawesome/fre
 import { cn } from "../lib/utils"
 import { useUserData } from "../lib/context"
 import Spinner from "../components/ui/spinner"
+import { faComment } from "@fortawesome/free-regular-svg-icons"
 
 const Overview = () => {
   // const { userData } = useUserData()
@@ -49,37 +50,52 @@ const Overview = () => {
               <h4>
                 Profile stats
               </h4>
-              <section className="grid grid-cols-[repeat(auto-fill,minmax(max-content,200px))] gap-5 mt-3">
+              <section className="grid grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(max-content,200px))] gap-3 md:gap-5 mt-3">
                 <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
-                  <div className="grid place-content-center bg-primary-foreground rounded-xl aspect-square w-[3.15rem]">
-                    <FontAwesomeIcon icon={faBookBookmark} size="lg" />
+                  <div className="grid place-content-center md:bg-primary-foreground rounded-md md:rounded-xl aspect-square w-[1.5rem] md:w-[3.15rem]">
+                    <FontAwesomeIcon icon={faBookBookmark} size="lg" className="max-md:hidden" />
+                    <FontAwesomeIcon icon={faBookBookmark} size="md" className="md:hidden" />
                   </div>
 
                   <div>
-                    <h4 className="text-muted-foreground text-base">Repositories</h4>
-                    <p className="text-xl font-medium">{userData?.public_repos}</p>
+                    <h4 className="text-muted-foreground text-sm md:text-base">Repositories</h4>
+                    <p className="md:text-xl font-medium">{userData?.public_repos}</p>
                   </div>
                 </article>
 
                 <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
-                  <div className="grid place-content-center bg-pink-400 rounded-xl aspect-square w-[3.2rem]">
-                    <FontAwesomeIcon icon={faUser} size="lg" />
+                  <div className="grid place-content-center md:bg-pink-500 rounded-md md:rounded-xl aspect-square w-[1.5rem] md:w-[3.15rem]">
+                    <FontAwesomeIcon icon={faComment} size="lg" className="max-md:hidden" />
+                    <FontAwesomeIcon icon={faComment} size="md" className="md:hidden" />
                   </div>
 
                   <div>
-                    <h4 className="text-[muted-foreground] text-base">Following</h4>
-                    <p className="text-xl font-medium">{userData?.followers}</p>
+                    <h4 className="text-muted-foreground text-sm md:text-base">Gists</h4>
+                    <p className="md:text-xl font-medium">{userData?.public_gists}</p>
                   </div>
                 </article>
 
                 <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
-                  <div className="grid place-content-center bg-primary-foreground rounded-xl aspect-square w-[3.15rem]">
-                    <FontAwesomeIcon icon={faUserPlus} size="lg" />
+                  <div className="grid place-content-center md:bg-orange-500 rounded-md md:rounded-xl aspect-square w-[1.5rem] md:w-[3.15rem]">
+                    <FontAwesomeIcon icon={faUser} size="lg" className="max-md:hidden" />
+                    <FontAwesomeIcon icon={faUser} size="md" className="md:hidden" />
                   </div>
 
                   <div>
-                    <h4 className="text-muted-foreground text-base">Following</h4>
-                    <p className="text-xl font-medium">{userData?.following}</p>
+                    <h4 className="text-[muted-foreground] text-sm md:text-base">Following</h4>
+                    <p className="md:text-xl font-medium">{userData?.followers}</p>
+                  </div>
+                </article>
+
+                <article className="flex items-stretch gap-4 bg-background p-3 rounded-2xl">
+                  <div className="grid place-content-center md:bg-blue-500 rounded-md md:rounded-xl aspect-square w-[1.5rem] md:w-[3.15rem]">
+                    <FontAwesomeIcon icon={faUserPlus} size="lg" className="max-md:hidden" />
+                    <FontAwesomeIcon icon={faUserPlus} size="md" className="md:hidden" />
+                  </div>
+
+                  <div>
+                    <h4 className="text-muted-foreground text-sm md:text-base">Following</h4>
+                    <p className="md:text-xl font-medium">{userData?.following}</p>
                   </div>
                 </article>
               </section>

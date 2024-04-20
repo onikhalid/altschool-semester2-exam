@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { NavBar, SideBar } from "../components";
 import React from "react";
 import { cn } from "../lib/utils";
+import { Toaster } from "sonner";
 
 export default function Root() {
 
@@ -17,7 +18,7 @@ export default function Root() {
                     <Outlet context={[isDarkMode]}/>
                 </div>
             </section>
-
+            <Toaster />
         </div>
     );
 }

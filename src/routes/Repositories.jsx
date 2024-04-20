@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faArrowRight, faBookBookmark, faBookOpen } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faArrowRight, faBookBookmark, faBookOpen, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { cn, convertKebabAndSnakeToLowerCase } from "../lib/utils"
 import NavTabs from "../components/NavTabs"
 import Spinner from "../components/ui/spinner"
-import { ErrorCard, RepoCard } from "../components"
+import { CreateRepoModal, ErrorCard, RepoCard } from "../components"
 import { useUserData } from "../lib/context"
 import {
   Select,
@@ -73,7 +73,6 @@ const Repositories = () => {
   const indexOfLastItem = currentPage * itemsPerPage
   const indexOfFirstItem = indexOfLastItem - itemsPerPage
   const currentItems = reposToDisplay.slice(indexOfFirstItem, indexOfLastItem)
-
   const totalPages = Math.ceil(reposToDisplay.length / itemsPerPage)
 
 
@@ -85,7 +84,10 @@ const Repositories = () => {
         currentTab={currentTab}
         setCurrentTab={setCurrentTab}
         fallback='/repos'
-        listClass='!px-4 text-foreground'
+        listClass=' text-foreground max-w-max'
+        sideButton={
+          <CreateRepoModal/>
+        }
       />
       <main className="grow relative flex flex-col overflow-hidden max-md:pb-4 max-md:pt-0">
         {
@@ -97,17 +99,21 @@ const Repositories = () => {
             (!isLoadingRepos && repos.length > 0) ?
               <>
                 <header className=" sticky top-0  z-[2] p-4 bg-charcoal shadow-lg max-md:pt-1 md:px-1">
-                  <input
-                    type="text"
-                    className="bg-background px-5 md:px-8 py-1.5 md:py-2.5 text-xs md:text-sm text-foreground rounded-full outline-none focus:border-primary-foreground focus:ring-2 focus:ring-primary-foreground w-full transition-all duration-300 ease-in-out"
-                    placeholder="Search repo name, description, language..."
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                  />
-                </header>
-                <section className="grow flex items-start overflow-y-hidden">
+                  <div className="relative ">
 
-                  <div className={cn("grid lg:grid-cols-2 2xl:grid-cols-3 items-center justify-center max-h-full gap-5 overflow-y-scroll max-md:p-4", currentItems.length === 0  && "mx-auto self-center")}>
+                    <input
+                      type="text"
+                      className="bg-background px-5 pl-10 md:px-8 md:pl-12 py-1.5 md:py-2.5 text-xs md:text-sm text-foreground rounded-full outline-none focus:border-primary-foreground focus:ring-2 focus:ring-primary-foreground w-full transition-all duration-300 ease-in-out"
+                      placeholder="Search repo name, description, language..."
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                    <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 left-4 transform -translate-y-1/2 text-foreground" />
+                  </div>
+                </header>
+
+                <section className="grow flex items-start overflow-y-hidden">
+                  <div className={cn("grid lg:grid-cols-2 2xl:grid-cols-3 items-center justify-center max-h-full gap-5 overflow-y-scroll max-md:p-4", currentItems.length === 0 && "mx-auto self-center")}>
                     {
                       currentItems?.map((repo, index) => (
                         <RepoCard key={index} repo={repo} />
@@ -158,7 +164,7 @@ const Repositories = () => {
                           <button
                             key={pageNumber}
                             onClick={() => handlePageChange(pageNumber)}
-                            className={`px-2 py-1 text-sm ${currentPage !== pageNumber ? 'bg-background text-foreground' : isDarkMode ? 'bg-gray-200 text-background' : 'bg-gray-700 text-background'}`}
+                            className={`px-2 py-1 text-sm transition-colors duration-300 ${currentPage !== pageNumber ? 'bg-background text-foreground' : isDarkMode ? 'bg-gray-200 text-background' : 'bg-gray-700 text-background'}`}
                           >
                             {pageNumber}
                           </button>
@@ -168,7 +174,7 @@ const Repositories = () => {
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       className={`px-2 py-1 text-sm bg-background text-foreground disabled:opacity-50 disabled:cursor-not-allowed`}
-                      disabled={currentPage === totalPages}
+                      disabled={(currentPage === totalPages) || (totalPages === 1 || totalPages === 0) || (currentItems.length === 0 )}
                     >
                       <FontAwesomeIcon icon={faArrowRight} />
                     </button>

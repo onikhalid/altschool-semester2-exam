@@ -47,3 +47,25 @@ export const sideBarResultFallback = {
     }
 
   }
+
+
+
+  export const dummyRepoData=[
+    {
+      id: 1234567,
+      name: "Dummy Repository",
+      description: "This is a dummy repository for demonstration purposes.",
+      html_url: "https://github.com/example/dummy-repo",
+      owner: {
+        login: "exampleUser",
+        avatar_url: "https://example.com/avatar.png",
+      },
+      private: false,
+      watchers_count: 10,
+      stargazers_count: 50,
+      forks_count: 5,
+      open_issues_count: 2,
+      created_at: "2023-04-01T12:00:00Z",
+      default_branch: "main",
+    },
+  ]

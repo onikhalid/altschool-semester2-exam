@@ -9,11 +9,9 @@ export const UserDataProvider = ({ children }) => {
     const [repos, setRepos] = useState([])
     const [isLoadingRepos, setLoadingRepos] = useState(true)
 
-    
-    useEffect(() => {
         const fetchData = async () => {
             try {
-              
+
                 const userProfileResult = await octokit.request('GET /user', {
                     headers: {
                         'X-GitHub-Api-Version': '2022-11-28'
@@ -25,8 +23,8 @@ export const UserDataProvider = ({ children }) => {
                         'X-GitHub-Api-Version': '2022-11-28'
                     }
                 })
-
-                setRepos(userRepoResult.data)
+                const storedFakeRepos = JSON.parse(localStorage.getItem('fakeRepos')) || [];
+                setRepos([...storedFakeRepos, ...userRepoResult.data])
                 setUserData(userProfileResult.data)
             } catch (error) {
                 console.error(error)
@@ -37,9 +35,41 @@ export const UserDataProvider = ({ children }) => {
                 setLoadingRepos(false)
             }
         }
+    useEffect(() => {
+
 
         fetchData()
+
+        // window.addEventListener('storage', fetchData);
+
+        // return () => {
+        //     window.removeEventListener('storage', fetchData);
+        // };
+
+        window.addEventListener('message', fetchData);
+
+        return () => {
+            window.removeEventListener('message', fetchData);
+        };
     }, [])
+
+
+    useEffect(() => {
+
+        const accessTokenChangeListener = (e) => {
+            console.log(e)
+            if (e.data === 'localReposUpdated') {
+               fetchData()
+            }
+
+        };
+
+        window.addEventListener('message', accessTokenChangeListener);
+
+        return () => {
+            window.removeEventListener('message', accessTokenChangeListener);
+        };
+    }, []);
 
 
     const value = {

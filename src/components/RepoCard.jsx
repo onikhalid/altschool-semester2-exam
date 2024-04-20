@@ -1,12 +1,45 @@
 // import React from 'react'
 
-import { faStar } from "@fortawesome/free-regular-svg-icons"
-import { faArrowUpRightFromSquare, faBookBookmark, faCodeFork } from "@fortawesome/free-solid-svg-icons"
+import { faEye, faStar, faTrashAlt } from "@fortawesome/free-regular-svg-icons"
+import { faArrowUpRightFromSquare, faBookBookmark, faCodeFork, faEllipsis } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import EditRepoModal from "./EditRepoModal"
+import { cn } from "../lib/utils"
 
 const RepoCard = ({ repo }) => {
-    const { name, description, language, stargazers_count, forks_count, private: isPrivate } = repo
+    const { name, description, language, stargazers_count, forks_count, private: isPrivate, fake, id } = repo
+
+    const onUpdate = (updatedRepo) => {
+        try {
+            const existingRepos = JSON.parse(localStorage.getItem('fakeRepos')) || [];
+            const index = existingRepos.findIndex(repo => repo.id === updatedRepo.id);
+            if (index === -1) {
+                throw new Error('Repository not found');
+            }
+
+            existingRepos[index] = updatedRepo;
+            localStorage.setItem('fakeRepos', JSON.stringify(existingRepos));
+            window.postMessage('localReposUpdated', window?.location.href);
+
+        } catch (error) {
+            console.error('Error updating repository:', error.message);
+        }
+    };
+
+    const onDelete = () => {
+        try {
+            const existingRepos = JSON.parse(localStorage.getItem('fakeRepos')) || [];
+            const filteredRepos = existingRepos.filter(repo => repo.id !== id);
+            localStorage.setItem('fakeRepos', JSON.stringify(filteredRepos));
+        } catch (error) {
+            console.error('Error deleting repository:', error.message);
+        }
+    };
+
+
+
     return (
         <article key={name} className="flex items-stretch gap-4 bg-background py-3 px-4  h-36  rounded-2xl">
             <section className="flex flex-col relative w-full">
@@ -15,9 +48,40 @@ const RepoCard = ({ repo }) => {
                         <FontAwesomeIcon icon={faBookBookmark} size="lg" className="mt-2" />
 
                         {name}
-                        <span className="text-[10px] sm:text-xs px-4  sm:py-1 rounded-full border-muted-foreground border">
+                        <span className={cn("text-[10px] sm:text-xs px-3 py-0.5 rounded-full border-muted-foreground border", fake && "hidden")}>
                             {isPrivate ? "PRIVATE" : "PUBLIC"}
                         </span>
+                        <span className={cn("text-[10px] sm:text-xs px-3 py-0.5 rounded-full border-muted-foreground border", !fake && "hidden")}>
+                            {fake && "FAKE"}
+                        </span>
+
+
+                        <Popover>
+                            <PopoverTrigger className="ml-auto">
+                                <FontAwesomeIcon icon={faEllipsis} size="lg" className="mt-2" />
+                            </PopoverTrigger>
+
+                            <PopoverContent align='end' className='p-0.5 bg-background max-w-max'>
+                                <div className="flex flex-col gap-1 bg-background">
+                                    <Link to={`/repos/${name}`} className="flex items-center gap-2 p-1.5 pr-5 text-xs text-foreground hover:bg-primary-foreground/50 hover:text-foreground rounded-md">
+                                        <FontAwesomeIcon icon={faEye} />
+                                        View Details
+                                    </Link>
+                                    {
+                                        fake &&
+                                        <>
+                                            <EditRepoModal repoData={repo} onUpdate={onUpdate} />
+
+                                            <button className="flex items-center gap-2 p-1.5 pr-5 text-xs text-foreground hover:bg-primary-foreground/50 hover:text-foreground rounded-md" onClick={onDelete}>
+                                                <FontAwesomeIcon icon={faTrashAlt} />
+                                                Delete Repo
+                                            </button>
+
+                                        </>
+                                    }
+                                </div>
+                            </PopoverContent>
+                        </Popover>
                     </h4>
                     {
                         description &&
@@ -37,7 +101,7 @@ const RepoCard = ({ repo }) => {
                         </p>
                     }
                     {
-                        <p className="flex items-center gap-2 text-xs max-md:hidden">
+                        <p className="flex items-center gap-2 text-xs">
 
                             <span className="inline-block ">
                                 <FontAwesomeIcon icon={faStar} />

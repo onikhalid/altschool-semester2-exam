@@ -35,3 +35,13 @@ export function convertKebabAndSnakeToLowerCase(string) {
 export const octokit = new Octokit({
   auth: import.meta.env.VITE_GITHUB_SECRET
 })
+
+
+
+// Usage example
+export function validateRepoName(name) {
+  // Regular expression to match GitHub repository naming pattern
+  const regex = /^[a-z\d](?:[a-z\d]|-(?=[a-z\d])){0,38}$/i;
+  return regex.test(name);
+}
+
