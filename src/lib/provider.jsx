@@ -39,13 +39,6 @@ export const UserDataProvider = ({ children }) => {
 
 
         fetchData()
-
-        // window.addEventListener('storage', fetchData);
-
-        // return () => {
-        //     window.removeEventListener('storage', fetchData);
-        // };
-
         window.addEventListener('message', fetchData);
 
         return () => {
@@ -57,7 +50,6 @@ export const UserDataProvider = ({ children }) => {
     useEffect(() => {
 
         const accessTokenChangeListener = (e) => {
-            console.log(e)
             if (e.data === 'localReposUpdated') {
                fetchData()
             }

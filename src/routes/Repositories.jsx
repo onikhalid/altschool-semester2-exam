@@ -52,10 +52,12 @@ const Repositories = () => {
 
   useEffect(() => {
     const convertedText = convertKebabAndSnakeToLowerCase(searchText)
+    const fake = "fake"
     const matches = repos.filter(repo => {
       return convertKebabAndSnakeToLowerCase(repo.name)?.includes(convertedText) ||
         convertKebabAndSnakeToLowerCase(repo.description)?.includes(convertedText) ||
         convertKebabAndSnakeToLowerCase(repo.visibility)?.includes(convertedText) ||
+       ((repo.fake && (convertKebabAndSnakeToLowerCase(repo.fake)?.includes(convertedText) || fake.includes(convertedText)) ))||
         convertKebabAndSnakeToLowerCase(repo.language)?.includes(convertedText)
     })
     setReposToDisplay(matches)
@@ -113,14 +115,14 @@ const Repositories = () => {
                 </header>
 
                 <section className="grow flex items-start overflow-y-hidden">
-                  <div className={cn("grid lg:grid-cols-2 2xl:grid-cols-3 items-center justify-center max-h-full gap-5 overflow-y-scroll max-md:p-4", currentItems.length === 0 && "mx-auto self-center")}>
+                  <div className={cn("grid lg:grid-cols-2 2xl:grid-cols-3 items-center justify-center max-h-full gap-5 overflow-y-scroll max-md:p-4 pt-4 max-md:mx-auto", currentItems.length === 0 && "mx-auto self-center")}>
                     {
                       currentItems?.map((repo, index) => (
                         <RepoCard key={index} repo={repo} />
                       ))
                     }
                     {
-                      currentItems.length === 0 &&
+                      (!isLoadingRepos && currentItems.length === 0) &&
                       <div className="flex items-center justify-center lg:col-span-2 2xl:col-span-3">
                         <ErrorCard title="No repo found" message="There are no repos that match your search parameter. Change it and try again" />
                       </div>

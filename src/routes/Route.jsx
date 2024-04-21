@@ -11,10 +11,10 @@ export default function Root() {
         <div className={cn("flex flex-col w-screen h-screen bg-background text-foreground", isDarkMode && 'dark')}>
             <NavBar isDarkMode={isDarkMode} setIsDarkMode={setIsDarkMode}/>
 
-            <section className="grow flex flex-col md:flex-row overflow-y-hidden ">
+            <section className="grow flex flex-col md:flex-row overflow-y-hidden w-full max-w-[1800px] mx-auto">
                 <SideBar/>
 
-                <div className="flex-1 overflow-y-auto flex md:m-2 md:p-4 md:pb-0 bg-charcoal md:rounded-xl">
+                <div className="flex-1 overflow-y-auto flex lg:m-2 md:p-4 md:pb-0 bg-charcoal md:rounded-xl">
                     <Outlet context={[isDarkMode]}/>
                 </div>
             </section>

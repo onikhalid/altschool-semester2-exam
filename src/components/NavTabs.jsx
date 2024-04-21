@@ -9,7 +9,7 @@ const NavTabs = ({ categoryArray, fallback, currentTab, sideButton, listClass })
 
     return (
         <Tabs defaultValue={currentTab || fallback} className='relative grid h-max mb-2 md:mb-4'>
-            <div className={cn('sticky top-0 flex items-center justify-between max-md:flex-col gap-x-2 lg:gap-4 flex-wrap overflow-x-scroll ')} >
+            <div className={cn('sticky top-0 flex items-center justify-between gap-x-2 lg:gap-4 overflow-x-scroll ')} >
                 <TabsList
                     className={cn("grow flex items-start justify-start gap-2.5 max-md:max-w-full overflow-x-auto bg-transparent bg-none [scrollbar-width:none]  w-full !p-0 !m-0 !h-max", listClass)}
                 >
