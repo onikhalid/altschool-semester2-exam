@@ -5,9 +5,10 @@ This project is a web application built with Vite, React, Radix UI primitives, T
 ## Features
 
 1. **Repository Listing**
-  - Displays a list of all repositories associated with the authenticated GitHub user.
+  - Displays a list of all repositories associated with the authenticated GitHub user - in this case, me(onikhalid).
   - Implements pagination to navigate through the repositories in batches.
-      - users can search the name, description, language, 
+      - users can search the name, description, language, and visibility of the repositories they want to see
+      - user can also set how many repositories they want to see per page
   - Provides search and filter functionality to find specific repositories.
 
 2. **Repository Details**
