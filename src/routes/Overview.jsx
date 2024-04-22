@@ -1,8 +1,7 @@
 import { useState } from "react"
 import NavTabs from "../components/NavTabs"
-import Repositories from "./Repositories"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faBookBookmark, faBookOpen, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
+import { faBookBookmark, faBookOpen, faTriangleExclamation, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { cn } from "../lib/utils"
 import { useUserData } from "../lib/context"
 import Spinner from "../components/ui/spinner"
@@ -17,17 +16,28 @@ const Overview = () => {
       title: 'Overview',
       link: '/',
       id: '1',
-      component: <Overview />,
       icon: <FontAwesomeIcon icon={faBookOpen} />
     },
     {
       title: 'Repositories',
       link: '/repos',
       id: '2',
-      component: <Repositories />,
       icon: <FontAwesomeIcon icon={faBookBookmark} />
     },
+    {
+      title: 'Error 404',
+      link: '/err',
+      id: '3',
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+    },
+    {
+      title: 'Boundary',
+      link: '/boundary',
+      id: '4',
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+    },
   ]
+
 
   return (
     <div className={cn("flex flex-col w-full  md:my-1 overflow-hidden px-4")}>

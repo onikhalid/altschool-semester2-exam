@@ -5,19 +5,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button } from './ui/button'
 import { FollowersModal } from './FollowersModal'
 import { FollowingModal } from './FollowingModal'
-// import { sideBarResultFallback } from '../constants'
 import { useUserData } from '../lib/context'
-const ProfileDetails = () => {
+import Spinner from './ui/spinner'
 
-  const { isLoading, userData } = useUserData()
+
+const ProfileDetails = () => {
+  const { isLoadingUserData, isLoadingRepos, userData } = useUserData()
 
   return (
     <>
       {
-        isLoading ? (
-          <p>Loading...</p>
+        (isLoadingUserData || isLoadingRepos) ? (
+          <div className="flex items-center justify-center w-full h-full row-span-3 max-md:hidden min-w-[200px] lg:min-w-[350px]">
+          <Spinner />
+        </div>
         ) :
-          (!isLoading && userData) ?
+          (!isLoadingUserData && !isLoadingRepos && userData) ?
             <>
 
               <article className='flex flex-col items-center justify-center text-center px-5 max-md:hidden'>

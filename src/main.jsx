@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-// import App from './App.jsx'
 import { ErrorBoundary } from './components'
 import {
   createBrowserRouter,
@@ -8,7 +7,7 @@ import {
 } from "react-router-dom";
 import "./index.css";
 import ErrorPage from '../error-page.jsx';
-import { Overview, Repositories, Root } from './routes';
+import { Boundary, Overview, Repositories, Root } from './routes';
 import { UserDataProvider } from './lib/provider';
 import RepositoryDetail from './routes/RepositoryDetail';
 
@@ -29,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "repos/:repoId",
         element: <RepositoryDetail />,
+      },
+      {
+        path: "boundary",
+        element: <Boundary/>,
       },
     ],
   },

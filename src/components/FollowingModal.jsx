@@ -2,16 +2,15 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog"
 import { Button } from "./ui/button"
-// import { input } from "ui/input"
-// import { label } from "@/components/ui/label"
 
-export function FollowingModal({ count }) {
+
+
+export function FollowingModal({count}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -19,28 +18,17 @@ export function FollowingModal({ count }) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Followers</DialogTitle>
           <DialogDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
+            This is a list of github users <a href="http://www.github.com/onikhalid" className="underline underline-offset-2 hover:[text-decoration-thickness:3px;] transition-all" target="_blank" rel="noopener noreferrer">@onikhalid</a> follows.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="name" className="text-right">
-              Name
-            </label>
-            <input id="name" value="Pedro Duarte" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <label htmlFor="username" className="text-right">
-              Username
-            </label>
-            <input id="username" value="@peduarte" className="col-span-3" />
-          </div>
+          
         </div>
-        <DialogFooter>
+        {/* <DialogFooter>
           <Button type="submit">Save changes</Button>
-        </DialogFooter>
+        </DialogFooter> */}
       </DialogContent>
     </Dialog>
   )

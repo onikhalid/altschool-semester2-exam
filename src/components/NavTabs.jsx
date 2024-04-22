@@ -9,7 +9,7 @@ const NavTabs = ({ categoryArray, fallback, currentTab, sideButton, listClass })
 
     return (
         <Tabs defaultValue={currentTab || fallback} className='relative grid h-max mb-2 md:mb-4'>
-            <div className={cn('sticky top-0 flex items-center justify-between max-md:flex-col gap-x-2 lg:gap-4 flex-wrap overflow-x-scroll ')} >
+            <div className={cn('sticky top-0 flex items-center justify-between gap-x-2 lg:gap-4 overflow-x-scroll ')} >
                 <TabsList
                     className={cn("grow flex items-start justify-start gap-2.5 max-md:max-w-full overflow-x-auto bg-transparent bg-none [scrollbar-width:none]  w-full !p-0 !m-0 !h-max", listClass)}
                 >
@@ -42,25 +42,13 @@ const NavTabs = ({ categoryArray, fallback, currentTab, sideButton, listClass })
                         );
                     })}
                 </TabsList>
-                {
-                    sideButton && sideButton
-                }
+
+                <span className='max-md:hidden'>
+                    {
+                        sideButton && sideButton
+                    }
+                </span>
             </div>
-
-
-
-
-            {/* 
-                {categoryArray?.map((cat) => {
-                    const { id, component, link, } = cat;
-                    return (
-                        <TabsContent className="relative !mt-0 md:mt-2 w-full overflow-y-scroll" value={link.toLowerCase()} key={`${id}${link}`}>
-                            {link.toLowerCase() === currentTab.toLowerCase() && component}
-                        </TabsContent>
-
-                    );
-                })} */}
-
         </Tabs>
 
     )

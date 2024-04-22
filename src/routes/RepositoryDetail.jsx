@@ -3,7 +3,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Link, useParams, useNavigate } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faCodeFork, faFolder, faLink } from "@fortawesome/free-solid-svg-icons";
+import { faArrowLeft, faCodeFork, faFolder, faLink, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import { faEye, faFile, faStar } from "@fortawesome/free-regular-svg-icons";
 
 import { cn, octokit } from "../lib/utils";
@@ -23,7 +23,7 @@ const RepositoryDetail = () => {
   const [isLoadingrepoInfo, setLoadingRepoInfo] = useState(true)
   const [isLoadingTreesInfo, setLoadingTreesInfo] = useState(true)
 
-  // ? JSON.parse(localStorage.getItem('fakeRepos')) : [];
+ 
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -68,17 +68,14 @@ const RepositoryDetail = () => {
       tree: []
     };
 
-    // Generate a random number of files and folders
-    const numFiles = Math.floor(Math.random() * 10) + 3; // Between 3 and 12 files/folders
-    const numFolders = Math.floor(Math.random() * 5) + 1; // Between 1 and 5 folders
+    const numFiles = Math.floor(Math.random() * 10) + 3;
+      const numFolders = Math.floor(Math.random() * 5) + 1;
 
-    // Generate files
     for (let i = 0; i < numFiles; i++) {
       const fileName = `file${i}.txt`;
       fakeTree.tree.push({ path: fileName, type: 'blob' });
     }
 
-    // Generate folders
     for (let i = 0; i < numFolders; i++) {
       const folderName = `folder${i}`;
       fakeTree.tree.push({ path: folderName, type: 'tree' });
@@ -103,12 +100,12 @@ const RepositoryDetail = () => {
 
             (!isLoadingrepoInfo && !isLoadingTreesInfo && repoTrees && repoInfo) ?
 
-              <main className="grow relative flex flex-col overflow-hidden max-md:pb-4 max-md:pt-0">
+              <main className="grow relative flex flex-col overflow-hidden max-md:pb-2.5 max-md:pt-0">
                 <header className="flex flex-wrap md:items-center justify-between pb-3 mb-3 border-b-2 border-foreground">
                   <section>
                     <div className="flex items-center gap-2">
                       <img src={repoInfo?.owner.avatar_url} alt="" className="w-10 h-10 rounded-full" />
-                      <h1 className="text-lg font-semibold">{repoInfo.name}</h1>
+                      <h1 className="text-base leading-snug md:text-lg font-semibold">{repoInfo.name}</h1>
                       <span className="text-[10px] px-3 sm:py-0.5 rounded-full border-muted-foreground border">
                         {repoInfo.private ? "PRIVATE" : "PUBLIC"}
                       </span>
@@ -128,25 +125,22 @@ const RepositoryDetail = () => {
                       <FontAwesomeIcon icon={faCodeFork} />
                       Forks: {repoInfo.forks_count}
                     </span>
-                    {/* <span>
-                      <FontAwesomeIcon icon={faCodeFork} />
-                      Open Issues: {repoInfo.open_issues_count}
-                    </span> */}
                   </section>
                 </header>
 
                 <button
                   onClick={handleGoBack}
-                  className={`flex items-center gap-4 px-4 py-2 text-sm bg-background max-w-max text-foreground border-2 border-transparent hover:border-foreground rounded-md transition-all duration-300`}
+                  className={`flex items-center gap-4 px-4 py-2 mb-2 text-sm bg-background max-w-max text-foreground border-2 border-transparent hover:border-foreground rounded-md transition-all duration-300`}
                 >
                   <FontAwesomeIcon icon={faArrowLeft} />
                   Back
                 </button>
-                <div className=" relative flex flex-col-reverse max-md:gap-4 gap-8 md:flex-row overflow-hidden max-md:pb-4 max-md:pt-0 w-[85%] max-w-[1000px] mx-auto lg:mt-8">
-                  <section className="flex flex-col w-full xl:w-3/5 md:pr-4 overflow-y-scroll pb-4">
+
+                <div className=" relative flex flex-col-reverse max-xl:gap-4 gap-8 md:flex-row overflow-hidden max-md:pt-8 w-full xl:w-[88%] max-w-[1000px] mx-auto xl:mt-8 max-md:overflow-y-scroll">
+                  <section className="flex flex-col w-full xl:w-3/5 lg:pr-4 md:overflow-y-scroll pb-4">
                     <ul className="border-[1.5px] rounded-md divide-y-[1.5px] divide-foreground w-full border-foreground">
                       <li className="flex justify-between items-center p-4 bg-background rounded-t-md">
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center flex-wrap gap-2">
                           <img src={repoInfo?.owner.avatar_url} alt="" className="w-8 h-8 rounded-full" />
                           <Link target="_blank" to={`https://github.com/${repoInfo?.owner.login}`} className="text-sm font-medium">
                             {repoInfo?.owner.login}
@@ -180,7 +174,7 @@ const RepositoryDetail = () => {
                     </ul>
                   </section>
 
-                  <article className="flex flex-col gap-3 md:gap-6 w-full lg:w-2/5 md:pl-4">
+                  <article className="flex flex-col gap-3 md:gap-6 w-full lg:w-2/5 md:pl-4 md:overflow-y-scroll">
                     <section>
                       <h2 className="text font-medium mb-1.5">About</h2>
                       <p className="text-[0.9rem]">{repoInfo.description}</p>
@@ -190,6 +184,7 @@ const RepositoryDetail = () => {
                       <FontAwesomeIcon icon={faLink} />
                       {repoInfo.html_url}
                     </a>
+
                     <div className="flex flex-col text-left text-sm mt-2 text-muted-foreground">
                       <p className="flex items-center gap-2 py-1 rounded-md">
                         <FontAwesomeIcon icon={faEye} />
@@ -208,6 +203,21 @@ const RepositoryDetail = () => {
                         {repoInfo.forks_count} forks
                       </p>
                     </div>
+
+                    {
+                      repoInfo.fake && 
+                      <article className="border-2 border-foreground rounded-md p-4">
+                        <h3><FontAwesomeIcon icon={faTriangleExclamation}/> Fake Repo Notice!</h3>
+                        <p className="text-sm mt-3">
+                          Please note that this repository is a fake repository created for the purpose of this project. The data shown here is not real.
+                          Every file and folder is dynamically generated and does not exist in an actual git repository.
+                        </p>
+                        <p className="text-xs mt-3 text-muted-foreground">
+                          This is done as a protection against abuse, since this link will be open to all, I deemed it necessary to prevent people from craeting, editing repos in my name
+                          whilst still compleying the necessary requirements for submission.
+                        </p>
+                      </article>
+                    }
                   </article>
                 </div>
               </main>
