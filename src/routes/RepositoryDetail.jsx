@@ -100,7 +100,7 @@ const RepositoryDetail = () => {
 
             (!isLoadingrepoInfo && !isLoadingTreesInfo && repoTrees && repoInfo) ?
 
-              <main className="grow relative flex flex-col overflow-hidden max-md:pb-4 max-md:pt-0">
+              <main className="grow relative flex flex-col overflow-hidden max-md:pb-2.5 max-md:pt-0">
                 <header className="flex flex-wrap md:items-center justify-between pb-3 mb-3 border-b-2 border-foreground">
                   <section>
                     <div className="flex items-center gap-2">

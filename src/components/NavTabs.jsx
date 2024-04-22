@@ -42,25 +42,13 @@ const NavTabs = ({ categoryArray, fallback, currentTab, sideButton, listClass })
                         );
                     })}
                 </TabsList>
-                {
-                    sideButton && sideButton
-                }
+
+                <span className='max-md:hidden'>
+                    {
+                        sideButton && sideButton
+                    }
+                </span>
             </div>
-
-
-
-
-            {/* 
-                {categoryArray?.map((cat) => {
-                    const { id, component, link, } = cat;
-                    return (
-                        <TabsContent className="relative !mt-0 md:mt-2 w-full overflow-y-scroll" value={link.toLowerCase()} key={`${id}${link}`}>
-                            {link.toLowerCase() === currentTab.toLowerCase() && component}
-                        </TabsContent>
-
-                    );
-                })} */}
-
         </Tabs>
 
     )

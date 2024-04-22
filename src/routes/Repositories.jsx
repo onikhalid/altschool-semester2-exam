@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faArrowLeft, faArrowRight, faBookBookmark, faBookOpen, faSearch } from "@fortawesome/free-solid-svg-icons"
+import { faArrowLeft, faArrowRight, faBookBookmark, faBookOpen, faSearch, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 import { cn, convertKebabAndSnakeToLowerCase } from "../lib/utils"
 import NavTabs from "../components/NavTabs"
 import Spinner from "../components/ui/spinner"
@@ -35,10 +35,22 @@ const Repositories = () => {
       title: 'Repositories',
       link: '/repos',
       id: '2',
-      component: <Repositories />,
       icon: <FontAwesomeIcon icon={faBookBookmark} />
     },
+    {
+      title: 'Error 404',
+      link: '/err',
+      id: '3',
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+    },
+    {
+      title: 'Boundary',
+      link: '/boundary',
+      id: '4',
+      icon: <FontAwesomeIcon icon={faTriangleExclamation} />
+    },
   ]
+
 
   const { repos, isLoadingRepos } = useUserData()
   const [reposToDisplay, setReposToDisplay] = useState(repos)
@@ -57,7 +69,7 @@ const Repositories = () => {
       return convertKebabAndSnakeToLowerCase(repo.name)?.includes(convertedText) ||
         convertKebabAndSnakeToLowerCase(repo.description)?.includes(convertedText) ||
         convertKebabAndSnakeToLowerCase(repo.visibility)?.includes(convertedText) ||
-       ((repo.fake && (convertKebabAndSnakeToLowerCase(repo.fake)?.includes(convertedText) || fake.includes(convertedText)) ))||
+        ((repo.fake && (convertKebabAndSnakeToLowerCase(repo.fake)?.includes(convertedText) || fake.includes(convertedText)))) ||
         convertKebabAndSnakeToLowerCase(repo.language)?.includes(convertedText)
     })
     setReposToDisplay(matches)
@@ -88,10 +100,10 @@ const Repositories = () => {
         fallback='/repos'
         listClass=' text-foreground max-w-max'
         sideButton={
-          <CreateRepoModal/>
+          <CreateRepoModal />
         }
       />
-      <main className="grow relative flex flex-col overflow-hidden max-md:pb-4 max-md:pt-0">
+      <main className="grow relative flex flex-col overflow-hidden max-md:pb-2.5 max-md:pt-0">
         {
           isLoadingRepos ?
             <div className="flex items-center justify-center w-full h-full row-span-3">
@@ -102,7 +114,6 @@ const Repositories = () => {
               <>
                 <header className=" sticky top-0  z-[2] p-4 bg-charcoal shadow-lg max-md:pt-1 md:px-1">
                   <div className="relative ">
-
                     <input
                       type="text"
                       className="bg-background px-5 pl-10 md:px-8 md:pl-12 py-1.5 md:py-2.5 text-xs md:text-sm text-foreground rounded-full outline-none focus:border-primary-foreground focus:ring-2 focus:ring-primary-foreground w-full transition-all duration-300 ease-in-out"
@@ -111,6 +122,10 @@ const Repositories = () => {
                       onChange={(e) => setSearchText(e.target.value)}
                     />
                     <FontAwesomeIcon icon={faSearch} className="absolute top-1/2 left-4 transform -translate-y-1/2 text-foreground" />
+                  </div>
+
+                  <div className="md:hidden mt-2">
+                    <CreateRepoModal />
                   </div>
                 </header>
 
@@ -131,7 +146,7 @@ const Repositories = () => {
                 </section>
 
 
-                <footer className="sticky bottom-0 mt-4 flex items-center gap-2 md:gap-6 justify-center">
+                <footer className="sticky bottom-0 mt-2.5 flex items-center gap-2 md:gap-6 justify-center">
                   <div className="flex items-center gap-4 flex-wrap text-sm">
                     <label className="max-md:hidden">Repos per page: </label>
 
@@ -176,7 +191,7 @@ const Repositories = () => {
                     <button
                       onClick={() => handlePageChange(currentPage + 1)}
                       className={`px-2 py-1 text-sm bg-background text-foreground disabled:opacity-50 disabled:cursor-not-allowed`}
-                      disabled={(currentPage === totalPages) || (totalPages === 1 || totalPages === 0) || (currentItems.length === 0 )}
+                      disabled={(currentPage === totalPages) || (totalPages === 1 || totalPages === 0) || (currentItems.length === 0)}
                     >
                       <FontAwesomeIcon icon={faArrowRight} />
                     </button>

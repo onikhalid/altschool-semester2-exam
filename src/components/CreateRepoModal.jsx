@@ -114,12 +114,10 @@ function CreateRepoModal() {
   return (
     <Dialog open={isModalOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setModalOpen(true)} variant="unstyled" className='flex items-center gap-2 !py-0 !h-max text-sm'>
+        <Button onClick={() => setModalOpen(true)} variant="unstyled" className='flex items-center gap-2 max-md: !py-0 !h-max text-sm'>
           <FontAwesomeIcon icon={faPlusCircle} />
           <p>
-            <span className="max-md:hidden">Create</span> {" "}
-            New {" "}
-            <span className="max-md:hidden">Repo</span>
+              Create New Repo
           </p>
 
         </Button>
