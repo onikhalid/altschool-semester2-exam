@@ -114,7 +114,7 @@ function CreateRepoModal() {
   return (
     <Dialog open={isModalOpen}>
       <DialogTrigger asChild>
-        <Button onClick={() => setModalOpen(true)} variant="unstyled" className='flex items-center gap-2 max-md: !py-0 !h-max text-sm'>
+        <Button onClick={() => setModalOpen(true)} variant="unstyled" className='flex items-center gap-2 py-2 border-2 border-foreground !h-max text-xs md:text-sm hover:bg-foreground hover:text-background'>
           <FontAwesomeIcon icon={faPlusCircle} />
           <p>
               Create New Repo
@@ -133,7 +133,7 @@ function CreateRepoModal() {
             </DialogClose>
           </div>
           <DialogDescription className='!mt-4'>
-            For security measures, I&apos;ve made sure that every repo that is created here is not real and only saved on your computer local storage. I don&apos;t want anybody
+            For <span className="font-semibold">security measures</span>, I&apos;ve made sure that every repo that is created here is <span className="font-semibold">not real</span>  and only saved on your computer local storage. I wouldn&apos;t want  just anybody
             to be able to create a real repository on my behalf.
           </DialogDescription>
         </DialogHeader>
